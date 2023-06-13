@@ -136,6 +136,10 @@ int main()
 		glfwPollEvents();
 	}
 	
+	// delete objects once they are no longer being used.
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	
 	glfwTerminate();
 	return 0;
 }
