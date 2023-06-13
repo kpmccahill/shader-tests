@@ -133,7 +133,7 @@ int main()
 
 
 	//WIREFRAME MODE
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Render loop: Main
 	while (!glfwWindowShouldClose(window))
