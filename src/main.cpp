@@ -106,8 +106,8 @@ int main()
 	};
 
 	unsigned int indices[] = {
-		0, 1, 3,
-		1, 2, 3
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
 	};
 	
 	// Vertex Array Object: Create an object to store vertex objects.
@@ -131,6 +131,10 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+
+	//WIREFRAME MODE
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	// Render loop: Main
 	while (!glfwWindowShouldClose(window))
 	{
@@ -142,18 +146,23 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shaderProgram);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// renders using the VAO buffer only
-		//glBindVertexArray(VAO);
+		glBindVertexArray(VAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// check and call IO events and swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 	
+	// clean up buffers and resources after they are done being used.
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteProgram(shaderProgram);
+
 	glfwTerminate();
 	return 0;
 }
