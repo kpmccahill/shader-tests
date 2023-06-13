@@ -99,9 +99,15 @@ int main()
 
 	// INIT: Vertices for the triangle.
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
+	};
+
+	unsigned int indices[] = {
+		0, 1, 3,
+		1, 2, 3
 	};
 	
 	// Vertex Array Object: Create an object to store vertex objects.
@@ -115,6 +121,13 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Element Buffer Object: creating a buffer, which holds indices that determines what to draw.
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// sets vertex attribute pointers, establishes how big 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
@@ -128,8 +141,13 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		// renders using the VAO buffer only
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		// check and call IO events and swap buffers
 		glfwSwapBuffers(window);
